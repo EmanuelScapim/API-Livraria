@@ -13,4 +13,3 @@ spring:
       properties:
         hibernate:
           org.hibernate.dialect.PostgreSQLDialect
-
