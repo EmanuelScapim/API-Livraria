@@ -3,6 +3,7 @@ package io.github.emanuelscapim.libraryapi.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Autor {
     private String nacionalidade;
 
     @OneToMany(mappedBy = "autor")
-    @Transient
+    @ToString.Exclude
     private List<Livro> livros;
 
     public Autor() {

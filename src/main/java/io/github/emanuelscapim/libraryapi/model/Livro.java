@@ -4,6 +4,7 @@ import io.github.emanuelscapim.libraryapi.model.enums.GeneroLivro;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_livro")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Livro {
 
@@ -36,7 +38,10 @@ public class Livro {
     @Column(name = "preco", precision = 18,scale = 2)
     private BigDecimal preco;
 
-    @ManyToOne
+    @ManyToOne(
+            //cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY
+    )
     @JoinColumn(name = "id_autor")
     private Autor autor;
 
