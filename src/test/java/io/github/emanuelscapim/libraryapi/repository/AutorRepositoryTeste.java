@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,5 +42,30 @@ public class AutorRepositoryTeste {
             autorEncontrado.setDatNascimento(LocalDate.of(1960, 1, 30));
             resposiory.save(autorEncontrado);
         }
+    }
+
+    @Test
+    public void listarTeste(){
+        List<Autor> list = resposiory.findAll();
+
+        list.forEach(System.out::println);
+    }
+
+    @Test
+    public void countTest(){
+        System.out.println("Contagem de autores: " + resposiory.count());
+    }
+
+    @Test
+    public void deletePorIdTest(){
+        var id = UUID.fromString("23727f06-d751-4149-b863-5b58b2d78916");
+        resposiory.deleteById(id);
+    }
+
+    @Test
+    public void deleteTest(){
+        var id = UUID.fromString("9575ab8b-f858-4024-8e14-e29d7356a8b7");
+        var maria = resposiory.findById(id).get();
+        resposiory.delete(maria);
     }
 }
