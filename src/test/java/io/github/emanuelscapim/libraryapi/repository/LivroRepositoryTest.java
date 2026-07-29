@@ -110,4 +110,16 @@ class LivroRepositoryTest {
         var resultado = repository.listarGenerosAtoresBrasileiros();
         resultado.forEach(System.out::println);
     }
+
+    @Test
+    void listarPorGeneroQueryParamTest(){
+        var resultado = repository.findbyGenero(GeneroLivro.FICCAO, "dataPublicacao");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroPositionParamTest(){
+        var resultado = repository.findbyGeneroPositionalParametrs(GeneroLivro.FICCAO, "dataPublicacao");
+        resultado.forEach(System.out::println);
+    }
 }
