@@ -3,10 +3,16 @@ package io.github.emanuelscapim.libraryapi.repository;
 import io.github.emanuelscapim.libraryapi.model.Autor;
 import io.github.emanuelscapim.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+
+/**
+ * @see LivroRepositoryTest
+ */
+
 
 public interface LivroRepository extends JpaRepository<Livro, UUID> {
 
@@ -21,4 +27,26 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     List<Livro> findByIsbn(String isbn);
 
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
+
+    //JPQL -> Referencia as entidades e as propriedades
+    @Query("select l from Livro as l order by l.titulo, l.preco")
+    List<Livro> listarTodosOrdenadosPorTituloAndPreco();
+
+    // select a.* from tb_livro l join autor a on a.id = l.id_autor
+    @Query("select a from Livro l join l.autor a ")
+    List<Autor> listarAutoresDosLivros();
+
+    // select distinct l.* from tb_livro l
+    @Query("select distinct l.titulo from Livro l")
+    List<String> listarNomesDiferentesLivros();
+
+    // select distinct l.genero from tb_livro l join tb_autor a on a.id = l.id_autor where a.nacionalidade = 'Brasileira' order by l.genero
+    @Query("""
+            select l.genero
+            from Livro l
+            join l.autor a
+            where a.nacionalidade = 'Brasileira'
+            order by l.genero
+            """)
+    List<String> listarGenerosAtoresBrasileiros();
 }
