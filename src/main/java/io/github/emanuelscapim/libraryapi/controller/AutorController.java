@@ -1,6 +1,7 @@
 package io.github.emanuelscapim.libraryapi.controller;
 
 import io.github.emanuelscapim.libraryapi.controller.dto.AutorDTO;
+import io.github.emanuelscapim.libraryapi.controller.dto.ErroResposta;
 import io.github.emanuelscapim.libraryapi.model.Autor;
 import io.github.emanuelscapim.libraryapi.service.AutorService;
 import org.springframework.http.ResponseEntity;
