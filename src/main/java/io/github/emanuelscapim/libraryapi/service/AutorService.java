@@ -1,7 +1,11 @@
 package io.github.emanuelscapim.libraryapi.service;
 
+import io.github.emanuelscapim.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.emanuelscapim.libraryapi.model.Autor;
 import io.github.emanuelscapim.libraryapi.repository.AutorRepository;
+import io.github.emanuelscapim.libraryapi.repository.LivroRepository;
+import io.github.emanuelscapim.libraryapi.validator.AutorValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,15 +13,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
     private final AutorRepository autorRepository;
+    private final AutorValidator validator;
+    private final LivroRepository livroRepository;
 
-    public AutorService (AutorRepository autorRepository){
-        this.autorRepository = autorRepository;
-    }
 
     public Autor salvar(Autor autor){
+        validator.validar(autor);
         return autorRepository.save(autor);
     }
 
@@ -25,7 +30,8 @@ public class AutorService {
         if(autor.getId() == null){
             throw new IllegalArgumentException("Para atualizar é necessário que autor já exista");
         }
-       autorRepository.save(autor);
+        validator.validar(autor);
+        autorRepository.save(autor);
     }
 
     public Optional<Autor> obterPorId(UUID id){
@@ -33,6 +39,9 @@ public class AutorService {
     }
 
     public void deletar(Autor autor){
+        if(possuiLivro(autor)){
+            throw new OperacaoNaoPermitidaException("Não é permitido excluir um autor que possui livros cadastrdos");
+        }
         autorRepository.delete(autor);
     }
 
@@ -50,5 +59,9 @@ public class AutorService {
         }
 
         return autorRepository.findAll();
+    }
+
+    public boolean possuiLivro(Autor autor){
+        return livroRepository.existsByAutor(autor);
     }
 }
