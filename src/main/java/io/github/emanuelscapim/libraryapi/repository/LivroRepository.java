@@ -4,10 +4,13 @@ import io.github.emanuelscapim.libraryapi.model.Autor;
 import io.github.emanuelscapim.libraryapi.model.Livro;
 import io.github.emanuelscapim.libraryapi.model.enums.GeneroLivro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,11 +55,22 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
             """)
     List<String> listarGenerosAtoresBrasileiros();
 
-    //named params -> parametros nomeados
+    //named paramters -> parametros nomeados
     @Query("select l from Livro l where l.genero = :genero order by :paramOrdenacao")
     List<Livro> findbyGenero(@Param("genero") GeneroLivro generoLivro, @Param("paramOrdenacao") String nomePropriedade);
 
     //positional parametrs
     @Query("select l from Livro l where l.genero = ?1 order by ?2")
     List<Livro> findbyGeneroPositionalParametrs(GeneroLivro generoLivro, String nomePropriedade);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Livro where genero = ?1")
+    void deleteByGenero(GeneroLivro generoLivro);
+
+
+    @Transactional
+    @Modifying
+    @Query("update Livro set dataPublicacao = ?1 ")
+    void updateDatapublicacao(LocalDate novaData);
 }

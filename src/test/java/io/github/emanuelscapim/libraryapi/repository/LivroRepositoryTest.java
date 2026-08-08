@@ -122,4 +122,14 @@ class LivroRepositoryTest {
         var resultado = repository.findbyGeneroPositionalParametrs(GeneroLivro.FICCAO, "dataPublicacao");
         resultado.forEach(System.out::println);
     }
+
+    @Test
+    void deletePorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.ROMANCE);
+    }
+
+    @Test
+    void updateDataPublicacaoTest(){
+        repository.updateDatapublicacao(LocalDate.of(2000,1,1));
+    }
 }
