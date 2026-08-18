@@ -43,7 +43,7 @@ public class LivroService {
                 .where((root, query, cb) -> cb.conjunction());
 
         if(isbn != null){
-            specs = specs.and(isbnIqual(isbn));
+            specs = specs.and(isbnEqual(isbn));
         }
 
         if(titulo != null){
@@ -52,6 +52,10 @@ public class LivroService {
 
         if(generoLivro != null){
             specs = specs.and(generoEqual(generoLivro));
+        }
+
+        if(anoPublicacao != null){
+            specs = specs.and(anoPublicacaoEqual(anoPublicacao));
         }
 
         return livroRepository.findAll(specs);
