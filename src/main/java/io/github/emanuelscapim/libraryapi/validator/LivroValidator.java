@@ -1,6 +1,7 @@
 package io.github.emanuelscapim.libraryapi.validator;
 
 
+import io.github.emanuelscapim.libraryapi.exceptions.CampoInvalidoException;
 import io.github.emanuelscapim.libraryapi.exceptions.RegistroDublicadoException;
 import io.github.emanuelscapim.libraryapi.model.Livro;
 import io.github.emanuelscapim.libraryapi.repository.LivroRepository;
@@ -13,12 +14,23 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LivroValidator {
 
+    private static final int ANO_EXIGENCIA_PRECO = 2020;
+
     private final LivroRepository livroRepository;
 
     public void validar(Livro livro){
         if(existeLivroComIsbn(livro)){
             throw new RegistroDublicadoException("ISBN já cadastrado");
         }
+
+        if(isPrecoObrigatorioNulo(livro)){
+            throw  new CampoInvalidoException("preco", "para livros com ano de publicação a partir de 2020, preco é obrigatório");
+        }
+    }
+
+    private boolean isPrecoObrigatorioNulo(Livro livro) {
+        return livro.getPreco() == null &&
+                livro.getDataPublicacao().getYear() >= ANO_EXIGENCIA_PRECO;
     }
 
     private boolean existeLivroComIsbn(Livro livro){
