@@ -3,6 +3,7 @@ package io.github.emanuelscapim.libraryapi.service;
 import io.github.emanuelscapim.libraryapi.model.Livro;
 import io.github.emanuelscapim.libraryapi.model.enums.GeneroLivro;
 import io.github.emanuelscapim.libraryapi.repository.LivroRepository;
+import io.github.emanuelscapim.libraryapi.validator.LivroValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,10 @@ import static io.github.emanuelscapim.libraryapi.repository.specs.LivroSpecs.*;
 public class LivroService {
 
     private final LivroRepository livroRepository;
+    private final LivroValidator validator;
 
     public Livro cadastrarLivro(Livro livro){
+        validator.validar(livro);
         return livroRepository.save(livro);
     }
 
@@ -70,6 +73,7 @@ public class LivroService {
             throw new IllegalArgumentException("Para atualizar é necessário que o livro já exista");
         }
 
+        validator.validar(livro);
         livroRepository.save(livro);
     }
 }
