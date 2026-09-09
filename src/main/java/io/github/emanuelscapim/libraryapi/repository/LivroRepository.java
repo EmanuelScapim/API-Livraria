@@ -3,6 +3,8 @@ package io.github.emanuelscapim.libraryapi.repository;
 import io.github.emanuelscapim.libraryapi.model.Autor;
 import io.github.emanuelscapim.libraryapi.model.Livro;
 import io.github.emanuelscapim.libraryapi.model.enums.GeneroLivro;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
